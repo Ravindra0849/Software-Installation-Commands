@@ -14,3 +14,5 @@
 * Nodejs and  NPM
 * Trivy
 * Kubectl
+* Prometheus and Grafana Using Helm
+* Argo CD using Helm
