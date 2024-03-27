@@ -31,4 +31,7 @@ username: admin
 sudo cat /opt/sonatype-work/nexus3/admin.password   ==> copy the password
 password: paste the password here
 
+sudo firewall-cmd --add-port=8081/tcp --permanent
+sudo firewall-cmd --reload
+
 Plugin as " Nexus Artifact Uploader" and "Pipeline Utility step"
