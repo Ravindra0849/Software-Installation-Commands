@@ -1,0 +1,62 @@
+# Installation on Ubuntu
+
+wget https://github.com/prometheus/prometheus/releases/download/v2.51.0/prometheus-2.51.0.linux-amd64.tar.gz
+
+tar xvfz prometheus-2.17.2.linux-amd64.tar.gz
+
+cd prometheus-2.17.2.linux-amd64
+
+./prometheus
+
+http://ipadress:9090
+
+sudo firewall-cmd --permanent --zone=public --add-port=9090/tcp
+
+sudo firewall-cmd --reload
+
+
+# Node Exporter Installation on Ubuntu prometheus server
+
+
+wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
+
+tar xvfz node_exporter-1.0.0-rc.0.linux-amd64.tar.gz
+
+./node_exporter
+
+sudo firewall-cmd --permanent --zone=public --add-port=9100/tcp
+
+sudo firewall-cmd --reload
+
+Access it from the External Browser
+
+
+--> Goto Prometheus.yml file
+
+# The job name is added as a label names 'job=<job_name>' to any timeseries scraped from this config.
+
+— job name: 'prometheus '
+# metrics_path defaults to /metrics'
+# scheme defaults to 'http'
+  static configs:
+    — targets: ['<Public Ip of prometheus server>: 9090']
+
+
+Below this we need to add Node Exporter
+
+— job name: 'node_exporter'
+# metrics_path defaults to /metrics'
+# scheme defaults to 'http'
+  static configs:
+    — targets: ['<Public Ip of node exporter server>: 9100']
+
+
+# Run the Command once again in Prometheus
+
+./prometheus
+
+sudo firewall-cmd --permanent --zone=public --add-port=9100/tcp
+
+sudo firewall-cmd --reload
+
+Access it from the External Browser
