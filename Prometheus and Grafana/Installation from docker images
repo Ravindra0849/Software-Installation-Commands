@@ -1,0 +1,63 @@
+# For Jenkins Container
+
+docker run -d --name jenkins -p  8080:8080 -p 50000:50000 -v /var/jenkins:/var/jenkins_home jenkins/jenkins:latest
+
+# For Grafana Container
+
+docker run --name -u root grafana -d -p 3000:3000 -v grafana_config:/etc/grafana -v grafana_data:/var/lib/grafana -v grafana_logs:/var/log/grafana grafana/grafana
+
+# For Prometheus Container
+
+docker run -u root --name Prometheus -d -p 9090:9090 -v Prometheus_config:/etc/prometheus/ prom/prometheus
+
+
+Go to Prometheus.yml file and add this
+
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ["<Prometheus public_IP>:9090"]
+
+  - job_name: "jenkins"
+
+    # metrics_path '/prometheus'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ["<Jenkins server public_IP>:9090"]
+
+
+# If you are facing any issues we need to check the ports.
+
+sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
+
+sudo firewall-cmd --reload
+
+sudo firewall-cmd --permanent --zone=public --add-port=9090/tcp
+
+sudo firewall-cmd --reload
