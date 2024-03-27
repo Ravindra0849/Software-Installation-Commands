@@ -1,0 +1,32 @@
+
+* Installing Elastic Search Commands
+
+rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+cd /etc/yum.repos.d/
+
+vim elasticsearch.repo
+
+[elasticsearch]
+name=Elasticsearch repository for 7.x packages
+baseurl=https://artifacts.elastic.co/packages/7.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=0
+autorefresh=1
+type=rpm-md
+
+
+
+sudo apt install --enablerepo=elasticsearch elasticsearch 
+
+sudo systemctl daemon-reload
+
+sudo systemctl enable elasticsearch.service
+
+systemctl status elasticsearch.service
+
+systemctl start elasticsearch.service
+
+Access it from External browser with 9200 port
+
